@@ -44,14 +44,13 @@ function CardForm() {
     const [cvc, setCvc] = useState("");
     const [country, setCountry] = useState("");
     const [focus, SetFocus] = useState("");
-    const [submittedData, setSubmittedData] = useState({});
+    const [submittedData, setSubmittedData] = useState([]);
     const [error, setError] = useState("");
+    const [index, setIndex] = useState(0);
     const [bannedCountries, setBannedCountries] = useState([{name: 'russia'},{name: 'america'},{name: "sa"}])
     
     const newBannedCountry = (name) => {
-        const newBannedCountry = {
-            name: name
-        }
+        const newBannedCountry = {name: name}
         setBannedCountries([...bannedCountries,newBannedCountry])
     }
 
@@ -69,15 +68,18 @@ function CardForm() {
 
     function onSubmit(e) {
         e.preventDefault()
-        !validateCountry(country).includes(true) &&
-                 console.log({ name, cardNumber, expiry, cvc, country })
-                 setSubmittedData({ name, cardNumber, expiry, cvc, country });
-                 setCountry("")
+        if(!validateCountry(country).includes(true)){
+                 console.log({name, cardNumber, expiry, cvc, country})
+                 sessionStorage.setItem(`card-${index}`, JSON.stringify({name, cardNumber, expiry, cvc, country}))
+                 setIndex(index+1)
+                 setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
+                 setCountry("")}
     }
 
 
     return (
         <>
+        <Grid container className={classes.GridControl}>
         <form className="card-form" onSubmit ={onSubmit}>
             <h2 className="text-center">Credit Card Form</h2>
             <Grid container className={classes.GridControl}>
@@ -162,6 +164,7 @@ function CardForm() {
       {/* <Results data={submittedData} /> */}
     </form>
     <AddBannedCountry bannedCountries={bannedCountries} newBannedCountry={newBannedCountry}/>
+    </Grid>
     </>
   );
 }

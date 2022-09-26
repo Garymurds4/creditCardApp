@@ -57,11 +57,11 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
 
     function onSubmit(e) {
         e.preventDefault() 
-        !validateCountry(country).includes(true) &&
+        if(!validateCountry(country).includes(true)){
                  console.log(country)
                  console.log("countries", bannedCountries)
                  newBannedCountry(country)
-                 setCountry("")
+                 setCountry("")}
     }
 
 
