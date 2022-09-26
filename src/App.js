@@ -1,14 +1,11 @@
-import './App.css';
+import './App.css'
+import CardDetails from './routes/forms/CardDetails'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Testing start
-        </p>
-      </header>
-    </div>
+  return ( 
+        <div className="card-form-container">
+          <CardDetails />
+        </div>
   );
 }
 
