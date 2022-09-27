@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import {Grid,Button,TextField} from "@mui/material"
+import React, { useState, useEffect } from "react"
+import {Grid,Box,Button,TextField} from "@mui/material"
 import makeStyles from "@mui/styles/makeStyles"
 import createStyles from "@mui/styles/createStyles"
 import "react-credit-cards/es/styles-compiled.css"
@@ -9,12 +9,25 @@ import '../../App.css'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
+    Box:{
+        display: "block",
+        width: "450px",
+        margin: "10px",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 14px 80px rgb(34 35 58 / 40%)",
+        padding: "10px 20px",
+        borderRadius: "15px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     TextFieldFull:{
-      width: "90%",
-      //paddingBottom: "20px"
+        width: "100%",
+        //paddingBottom: "20px"
     },
     Button:{
-      width: "45%"
+        width: "45%"
     },
     GridControl:{
         display:"flex", 
@@ -24,11 +37,11 @@ const useStyles = makeStyles((theme) =>
         marginBottom: 20
     },
     heading: {
-      textAlign: "center",
-      fontSize: 30,
-      color: "#0F5C59",
-      marginLeft: 10,
-      marginBottom: 20,
+        textAlign: "center",
+        fontSize: 30,
+        color: "#0F5C59",
+        marginLeft: 10,
+        marginBottom: 20,
     }
   })
 );
@@ -36,9 +49,7 @@ const useStyles = makeStyles((theme) =>
 function AddBannedCountry({bannedCountries, newBannedCountry}) {
     const classes = useStyles();
     const [country, setCountry] = useState("");
-    const [focus, SetFocus] = useState("");
     const [error, setError] = useState("");
-    //const [bannedCountries, setBannedCountries] = useState([{name: 'russia'},{name: 'america'},{name: "sa"}])
     
     const validateCountry = (test) => {
         return bannedCountries.map((name)=> {
@@ -51,9 +62,13 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
             }
         })     
     }
-    useEffect(()=>{
-        console.log("countries", bannedCountries)  
-    },[])
+
+    // useEffect(()=>{
+    //     const list = [1, 2, 3];
+    //     sessionStorage.setItem('List', JSON.stringify(list));
+    //     const result = JSON.parse(sessionStorage.getItem('List'));
+    //     console.log(result); 
+    // },[])
 
     function onSubmit(e) {
         e.preventDefault() 
@@ -66,8 +81,9 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
 
 
     return (
-        <form className="card-form" onSubmit ={onSubmit}>
-            <h2 className="text-center">Add a new country to banned list</h2>
+        <Box className={classes.Box}>
+        <form onSubmit ={onSubmit}>
+            <h2 style={{textAlign: "center"}}>Add a new country to banned list</h2>
                 <Grid container className={classes.GridControl} lg={12}>
                     <TextField
                     className={classes.TextFieldFull}
@@ -75,12 +91,10 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
                     type="text"
                     size="small"
                     placeholder="Country"
-                    name="number"
                     value={country}
                     helperText={error}
                     error={!!error}
                     onClick={() => setError("")}
-                    onFocus={(e) => SetFocus(e.target.name)}
                     onChange={(e) => setCountry(e.target.value)}
                     />
                 </Grid>
@@ -92,8 +106,8 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
                             </Button>
                           </Grid>
                 </Grid>  
-           
-    </form>
+        </form>
+        </Box>
   );
 }
 
