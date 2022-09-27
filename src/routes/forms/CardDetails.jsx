@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react"
 import {Grid,Button,TextField, Box, FormLabel} from "@mui/material"
 import makeStyles from "@mui/styles/makeStyles"
 import createStyles from "@mui/styles/createStyles"
-import Card from "react-credit-cards"
 import AddBannedCountry from "./AddBannedCountry"
-import "react-credit-cards/es/styles-compiled.css"
 import DisplayCards from "./DisplayCards"
+import Card from "react-credit-cards"
+import "../../components/cards/CreditCard.css";
+import "react-credit-cards/es/styles-compiled.css"
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -49,11 +50,6 @@ const useStyles = makeStyles((theme) =>
         direction:"column",
         justifyContent: "center",
     },
-    GridBox2:{
-        display:"flex", 
-        flexWrap: "wrap",
-        justifyContent: "center",
-    },
     validationLogin:{
         fontSize: "10px",
         fontFamily: 'Open Sans',
@@ -84,11 +80,18 @@ function CardForm() {
     const [errorCard, setErrorCard] = useState("");
     const [bannedCountries, setBannedCountries] = useState([{name: 'russia'},{name: 'north korea'},{name: "sa"}])
     
+    //Clears session data on refresh
+    useEffect(()=>{
+        sessionStorage.setItem('Cards', JSON.stringify([]));
+    },[])
+
+    //Retrieves data from child component AddbannedCountry
     const newBannedCountry = (name) => {
         const newBannedCountry = {name: name}
         setBannedCountries([...bannedCountries,newBannedCountry])
     }
 
+    //Check if country on banned list for validation
     const validateCountry = (test) => {
         return bannedCountries.map((name)=> {
             if(test.toLowerCase() === name.name){
@@ -101,6 +104,7 @@ function CardForm() {
         })     
     }
 
+    //Check Card number to see if it exsists already in session storage
     const validateCardnum = () => {
         return JSON.parse(sessionStorage.getItem('Cards')).map((name)=>{
             if(name.cardNumber === cardNumber)
@@ -114,29 +118,31 @@ function CardForm() {
         })   
     }
 
+    //Onsubmit used to check all validation and publish data if correct
     function onSubmit(e) {
         e.preventDefault()
         if(!validateCountry(country).includes(true)){
             if(!validateCardnum().includes(true)){
             sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{ name, cardNumber, expiry, cvc, country }]));
             setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
+            setName("")
             setCardNumber("")
+            setExpiry("")
+            setCvc("")
             setCountry("")
             }   
         }
     }
-
-    useEffect(()=>{
-        
-    },[cardNumber])
 
     return (
         <>
             <Grid container className={classes.GridBox}>
                 <Box className={classes.Box}>
                 <form  onSubmit ={onSubmit}>
-                    <h2 style={{textAlign: "center"}}>Credit Card Form</h2>
+                    <h2 style={{textAlign: "center", color: "#0c69cc"}}>RANK Credit Cards</h2>
                         <Card
+                            locale={{ valid: "Expires" }}
+                            placeholders={{ name: "Cardholder Name" }}
                             style={{paddingTop: 20}}
                             number={cardNumber}
                             name={name}
@@ -165,6 +171,7 @@ function CardForm() {
                             placeholder="Card Number"
                             value={cardNumber}
                             error={!!errorCard}
+                            onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,16)}}
                             onClick={() => setErrorCard("")}
                             onChange={(e) => setCardNumber(e.target.value)}
                             onFocus={(e) => SetFocus(e.target.name)}
@@ -190,6 +197,7 @@ function CardForm() {
                             name="cvc"
                             placeholder="CVC"
                             value={cvc}
+                            onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3)}}
                             onChange={(e) => setCvc(e.target.value)}
                             onFocus={(e) => SetFocus(e.target.name)}
                         />
@@ -222,12 +230,13 @@ function CardForm() {
             <AddBannedCountry bannedCountries={bannedCountries} newBannedCountry={newBannedCountry}/>
         </Grid>
 
-        
-        <Grid className={classes.GridBox2}>
+        {/* <Grid container sx={12} className={classes.GridBox}>
+        <AddBannedCountry bannedCountries={bannedCountries} newBannedCountry={newBannedCountry}/>
+        </Grid> */}
+
+        <Grid className={classes.GridBox}>
             <DisplayCards/>
         </Grid>
-        
-        
     </>
   );
 }

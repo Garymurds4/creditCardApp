@@ -1,11 +1,8 @@
 import React, { useState } from "react"
-import {Grid,Box,Button,TextField} from "@mui/material"
+import {Grid,Box,Button,TextField,ListItem,List,ListItemText} from "@mui/material"
 import makeStyles from "@mui/styles/makeStyles"
 import createStyles from "@mui/styles/createStyles"
 import "react-credit-cards/es/styles-compiled.css"
-import '../../App.css'
-//import { set } from "lodash"
-//import Results from "./Results";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -33,6 +30,9 @@ const useStyles = makeStyles((theme) =>
         flexDirection:"row",
         justifyContent: "center",
         marginBottom: 15
+    },
+    List:{
+        alignItems:"center"
     },
     heading: {
         textAlign: "center",
@@ -70,9 +70,16 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
 
 
     return (
-        <Box className={classes.Box}>
+        <Box fullwidth className={classes.Box}>
         <form onSubmit ={onSubmit}>
-            <h2 style={{textAlign: "center"}}>Add a new country to banned list</h2>
+            <h2 style={{textAlign: "center", color: "#0c69cc"}}>Add a country to banned list</h2>
+
+            <List className={classes.List}>
+                    {bannedCountries.map((name) => {
+                            return <ListItem disablePadding><ListItemText>{name.name}</ListItemText></ListItem>
+                    })}
+            </List>
+
                 <Grid container className={classes.Grid} lg={12}>
                     <TextField
                     className={classes.TextFieldFull}
