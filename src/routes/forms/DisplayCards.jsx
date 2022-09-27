@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) =>
         margin: "10px",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 14px 80px rgb(34 35 58 / 40%)",
-        padding: "10px 20px",
+        padding: "0px 20px",
         borderRadius: "15px",
         display: "flex",
         flexDirection: "column",
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) =>
 
 function DisplayCards() {
     const classes = useStyles();
+    //Fetches data from session to map the cards 
     const result = JSON.parse(sessionStorage.getItem('Cards'));
 
     return (
@@ -40,7 +41,7 @@ function DisplayCards() {
                 return( 
                     <Grid lg={12} xs={12}>
                         <Box className={classes.Box}>
-                        <h2 style={{textAlign: "center", color: "#0c69cc"}}>{object.country}</h2>
+                            <h2 style={{textAlign: "center", color: "#0c69cc"}}>{object.country}</h2>
                                 <Card
                                     locale={{ valid: "Expires" }}
                                     style={{paddingTop: 20}}
@@ -49,7 +50,7 @@ function DisplayCards() {
                                     expiry={object.expiry}
                                     cvc={object.cvc}
                                 />
-                        <Typography className={classes.Heading}>CVC: {object.cvc}</Typography>
+                            <Typography className={classes.Heading}>CVC: {object.cvc}</Typography>
                         </Box>
                     </Grid>
                 )

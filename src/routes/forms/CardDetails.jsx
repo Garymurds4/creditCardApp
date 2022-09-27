@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
         margin: "10px",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 14px 80px rgb(34 35 58 / 40%)",
-        padding: "10px 20px",
+        padding: "0px 20px",
         borderRadius: "15px",
         display: "flex",
         flexDirection: "column",
@@ -123,7 +123,7 @@ function CardForm() {
         e.preventDefault()
         if(!validateCountry(country).includes(true)){
             if(!validateCardnum().includes(true)){
-            sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{ name, cardNumber, expiry, cvc, country }]));
+            sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{name, cardNumber, expiry, cvc, country}]));
             setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
             setName("")
             setCardNumber("")
@@ -142,7 +142,7 @@ function CardForm() {
                     <h2 style={{textAlign: "center", color: "#0c69cc"}}>RANK Credit Cards</h2>
                         <Card
                             locale={{ valid: "Expires" }}
-                            placeholders={{ name: "Cardholder Name" }}
+                            placeholders={{ name: "Name" }}
                             style={{paddingTop: 20}}
                             number={cardNumber}
                             name={name}

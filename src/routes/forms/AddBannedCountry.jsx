@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) =>
         margin: "10px",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 14px 80px rgb(34 35 58 / 40%)",
-        padding: "10px 20px",
+        padding: "0px 20px",
         borderRadius: "15px",
         display: "flex",
         flexDirection: "column",
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) =>
     },
     TextFieldFull:{
         width: "100%",
+        marginTop: 20
     },
     Button:{
         width: "45%",
@@ -29,10 +30,14 @@ const useStyles = makeStyles((theme) =>
         direction:"row",
         flexDirection:"row",
         justifyContent: "center",
+        marginTop: 20,
         marginBottom: 15
     },
     List:{
-        alignItems:"center"
+        alignItems:"center",
+        minHeight: 235,
+        maxWidth: 370,
+        minWidth: 300,
     },
     heading: {
         textAlign: "center",
@@ -49,6 +54,7 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
     const [country, setCountry] = useState("");
     const [error, setError] = useState("");
     
+    //Validation check for duplicate name before adding to array
     const validateCountry = (test) => {
         return bannedCountries.map((name)=> {
             if(test.toLowerCase() === name.name){
@@ -61,6 +67,7 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
         })     
     }
 
+    //Form submit done to check before sending to parent component
     function onSubmit(e) {
         e.preventDefault() 
         if(!validateCountry(country).includes(true)){
@@ -68,30 +75,31 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
                  setCountry("")}
     }
 
-
     return (
         <Box fullwidth className={classes.Box}>
         <form onSubmit ={onSubmit}>
-            <h2 style={{textAlign: "center", color: "#0c69cc"}}>Add a country to banned list</h2>
+            <h2 style={{textAlign: "center", color: "#0c69cc"}}>Banned list of countries</h2>
 
             <List className={classes.List}>
                     {bannedCountries.map((name) => {
-                            return <ListItem disablePadding><ListItemText>{name.name}</ListItemText></ListItem>
+                            return  <ListItem disablePadding divider="true">
+                                        <ListItemText>{name.name}</ListItemText>
+                                    </ListItem>
                     })}
             </List>
 
                 <Grid container className={classes.Grid} lg={12}>
                     <TextField
-                    className={classes.TextFieldFull}
-                    required
-                    type="text"
-                    size="small"
-                    placeholder="Country"
-                    value={country}
-                    helperText={error}
-                    error={!!error}
-                    onClick={() => setError("")}
-                    onChange={(e) => setCountry(e.target.value)}
+                        className={classes.TextFieldFull}
+                        required
+                        type="text"
+                        size="small"
+                        placeholder="Country"
+                        value={country}
+                        helperText={error}
+                        error={!!error}
+                        onClick={() => setError("")}
+                        onChange={(e) => setCountry(e.target.value)}
                     />
                 </Grid>
                 
