@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {Grid,Button,TextField, Box, collapseClasses} from "@mui/material"
+import {Grid,Button,TextField, Box, FormLabel} from "@mui/material"
 import makeStyles from "@mui/styles/makeStyles"
 import createStyles from "@mui/styles/createStyles"
 import Card from "react-credit-cards"
@@ -10,7 +10,6 @@ import DisplayCards from "./DisplayCards"
 const useStyles = makeStyles((theme) =>
   createStyles({
     Box:{
-        display: "block",
         width: "450px",
         margin: "10px",
         backgroundColor: "#FFFFFF",
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) =>
         display:"flex", 
         direction:"column",
         flexDirection:"column",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     GridTop:{
         display:"flex", 
@@ -54,6 +53,13 @@ const useStyles = makeStyles((theme) =>
         display:"flex", 
         flexWrap: "wrap",
         justifyContent: "center",
+    },
+    validationLogin:{
+        fontSize: "10px",
+        fontFamily: 'Open Sans',
+        display: 'flex',
+        justifyContent: "center",
+        marginBottom: 15
     },
     heading: {
         textAlign: "center",
@@ -74,7 +80,8 @@ function CardForm() {
     const [country, setCountry] = useState("");
     const [focus, SetFocus] = useState("");
     const [submittedData, setSubmittedData] = useState([]);
-    const [error, setError] = useState("");
+    const [errorCountry, setErrorCountry] = useState("");
+    const [errorCard, setErrorCard] = useState("");
     const [bannedCountries, setBannedCountries] = useState([{name: 'russia'},{name: 'north korea'},{name: "sa"}])
     
     const newBannedCountry = (name) => {
@@ -85,7 +92,7 @@ function CardForm() {
     const validateCountry = (test) => {
         return bannedCountries.map((name)=> {
             if(test.toLowerCase() === name.name){
-                setError("Banned country")
+                setErrorCountry("Banned country")
                 setCountry("")
                 return true
             }else{
@@ -94,28 +101,42 @@ function CardForm() {
         })     
     }
 
+    const validateCardnum = () => {
+        return JSON.parse(sessionStorage.getItem('Cards')).map((name)=>{
+            if(name.cardNumber === cardNumber)
+            {
+                setErrorCard("Duplicate card number")
+                setCardNumber("")
+                return true
+            }else{
+                return false 
+            }
+        })   
+    }
+
     function onSubmit(e) {
         e.preventDefault()
         if(!validateCountry(country).includes(true)){
-                 console.log("test",submittedData)
-                 sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{ name, cardNumber, expiry, cvc, country }]));
-                 setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
-                 setCountry("")
+            if(!validateCardnum().includes(true)){
+            sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{ name, cardNumber, expiry, cvc, country }]));
+            setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
+            setCardNumber("")
+            setCountry("")
+            }   
         }
     }
 
     useEffect(()=>{
-        //sessionStorage.setItem('Cards', JSON.stringify(submittedData));
-        console.log(JSON.parse(sessionStorage.getItem('Cards')))
-    },[submittedData])
+        
+    },[cardNumber])
 
     return (
         <>
-            <Grid  className={classes.GridBox}>
+            <Grid container className={classes.GridBox}>
                 <Box className={classes.Box}>
                 <form  onSubmit ={onSubmit}>
                     <h2 style={{textAlign: "center"}}>Credit Card Form</h2>
-                    <Card
+                        <Card
                             style={{paddingTop: 20}}
                             number={cardNumber}
                             name={name}
@@ -143,6 +164,8 @@ function CardForm() {
                             name="number"
                             placeholder="Card Number"
                             value={cardNumber}
+                            error={!!errorCard}
+                            onClick={() => setErrorCard("")}
                             onChange={(e) => setCardNumber(e.target.value)}
                             onFocus={(e) => SetFocus(e.target.name)}
                         />
@@ -180,14 +203,13 @@ function CardForm() {
                             placeholder="Country"
                             name="number"
                             value={country}
-                            helperText={error}
-                            error={!!error}
-                            style={{marginBottom: 20}}
-                            onClick={() => setError("")}
+                            error={!!errorCountry}
+                            onClick={() => setErrorCountry("")}
                             onFocus={(e) => SetFocus(e.target.name)}
                             onChange={(e) => setCountry(e.target.value)}
                         />
                     </Grid>
+                    <FormLabel className={classes.validationLogin} component="legend" error="true">{errorCard}{errorCountry}</FormLabel>
                         <Grid container align="center">
                                 <Grid item lg={12} xs={12}>
                                     <Button type="submit" className={classes.Button} variant="outlined" style={{marginBottom: 20}}>

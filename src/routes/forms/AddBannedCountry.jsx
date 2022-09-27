@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import {Grid,Box,Button,TextField} from "@mui/material"
 import makeStyles from "@mui/styles/makeStyles"
 import createStyles from "@mui/styles/createStyles"
@@ -10,7 +10,6 @@ import '../../App.css'
 const useStyles = makeStyles((theme) =>
   createStyles({
     Box:{
-        display: "block",
         width: "450px",
         margin: "10px",
         backgroundColor: "#FFFFFF",
@@ -20,21 +19,20 @@ const useStyles = makeStyles((theme) =>
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
     },
     TextFieldFull:{
         width: "100%",
-        //paddingBottom: "20px"
     },
     Button:{
-        width: "45%"
+        width: "45%",
     },
-    GridControl:{
+    Grid:{
         display:"flex", 
         direction:"row",
         flexDirection:"row",
         justifyContent: "center",
-        marginBottom: 20
+        marginBottom: 15
     },
     heading: {
         textAlign: "center",
@@ -63,19 +61,10 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
         })     
     }
 
-    // useEffect(()=>{
-    //     const list = [1, 2, 3];
-    //     sessionStorage.setItem('List', JSON.stringify(list));
-    //     const result = JSON.parse(sessionStorage.getItem('List'));
-    //     console.log(result); 
-    // },[])
-
     function onSubmit(e) {
         e.preventDefault() 
         if(!validateCountry(country).includes(true)){
-                 console.log(country)
-                 console.log("countries", bannedCountries)
-                 newBannedCountry(country)
+                 newBannedCountry(country.toLowerCase())
                  setCountry("")}
     }
 
@@ -84,7 +73,7 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
         <Box className={classes.Box}>
         <form onSubmit ={onSubmit}>
             <h2 style={{textAlign: "center"}}>Add a new country to banned list</h2>
-                <Grid container className={classes.GridControl} lg={12}>
+                <Grid container className={classes.Grid} lg={12}>
                     <TextField
                     className={classes.TextFieldFull}
                     required

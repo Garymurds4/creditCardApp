@@ -9,7 +9,6 @@ import "react-credit-cards/es/styles-compiled.css"
 const useStyles = makeStyles((theme) =>
   createStyles({
     Box:{
-        display: "block",
         width: "450px",
         margin: "10px",
         backgroundColor: "#FFFFFF",
