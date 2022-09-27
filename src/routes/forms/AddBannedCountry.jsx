@@ -38,13 +38,6 @@ const useStyles = makeStyles((theme) =>
         minHeight: 235,
         maxWidth: 370,
         minWidth: 300,
-    },
-    heading: {
-        textAlign: "center",
-        fontSize: 30,
-        color: "#0F5C59",
-        marginLeft: 10,
-        marginBottom: 20,
     }
   })
 );
@@ -72,7 +65,8 @@ function AddBannedCountry({bannedCountries, newBannedCountry}) {
         e.preventDefault() 
         if(!validateCountry(country).includes(true)){
                  newBannedCountry(country.toLowerCase())
-                 setCountry("")}
+                 setCountry("")
+        }
     }
 
     return (

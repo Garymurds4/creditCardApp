@@ -56,13 +56,6 @@ const useStyles = makeStyles((theme) =>
         display: 'flex',
         justifyContent: "center",
         marginBottom: 15
-    },
-    heading: {
-        textAlign: "center",
-        fontSize: 30,
-        color: "#0F5C59",
-        marginLeft: 10,
-        marginBottom: 20,
     }
   })
 );
@@ -107,8 +100,7 @@ function CardForm() {
     //Check Card number to see if it exsists already in session storage
     const validateCardnum = () => {
         return JSON.parse(sessionStorage.getItem('Cards')).map((name)=>{
-            if(name.cardNumber === cardNumber)
-            {
+            if(name.cardNumber === cardNumber){
                 setErrorCard("Duplicate card number")
                 setCardNumber("")
                 return true
@@ -123,13 +115,13 @@ function CardForm() {
         e.preventDefault()
         if(!validateCountry(country).includes(true)){
             if(!validateCardnum().includes(true)){
-            sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{name, cardNumber, expiry, cvc, country}]));
-            setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
-            setName("")
-            setCardNumber("")
-            setExpiry("")
-            setCvc("")
-            setCountry("")
+                sessionStorage.setItem('Cards', JSON.stringify([...submittedData,{name, cardNumber, expiry, cvc, country}]));
+                setSubmittedData([...submittedData, { name, cardNumber, expiry, cvc, country }])
+                setName("")
+                setCardNumber("")
+                setExpiry("")
+                setCvc("")
+                setCountry("")
             }   
         }
     }
@@ -138,86 +130,86 @@ function CardForm() {
         <>
             <Grid container className={classes.GridBox}>
                 <Box className={classes.Box}>
-                <form  onSubmit ={onSubmit}>
-                    <h2 style={{textAlign: "center", color: "#0c69cc"}}>RANK Credit Cards</h2>
-                        <Card
-                            locale={{ valid: "Expires" }}
-                            placeholders={{ name: "Name" }}
-                            style={{paddingTop: 20}}
-                            number={cardNumber}
-                            name={name}
-                            expiry={expiry}
-                            cvc={cvc}
-                            focused={focus}
-                        />
-                    <Grid container className={classes.GridTop}>
-                        <TextField
-                            className={classes.TextField}
-                            required
-                            type="text"
-                            size="small"
-                            name="number"
-                            placeholder="Cardholder Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            onFocus={(e) => SetFocus(e.target.name)}
-                        />
-                        <TextField
-                            className={classes.TextField}
-                            required
-                            type="number"
-                            size="small"
-                            name="number"
-                            placeholder="Card Number"
-                            value={cardNumber}
-                            error={!!errorCard}
-                            onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,16)}}
-                            onClick={() => setErrorCard("")}
-                            onChange={(e) => setCardNumber(e.target.value)}
-                            onFocus={(e) => SetFocus(e.target.name)}
-                        />
-                    </Grid>
-                    <Grid container className={classes.Grid}>
-                        <TextField
-                            className={classes.TextField}
-                            required
-                            type="text"
-                            size="small"
-                            name="number"
-                            placeholder="MM/YY"
-                            value={expiry}
-                            onChange={(e) => setExpiry(e.target.value)}
-                            onFocus={(e) => SetFocus(e.target.name)}
-                        />
-                        <TextField
-                            className={classes.TextField}
-                            required
-                            type="number"
-                            size="small"
-                            name="cvc"
-                            placeholder="CVC"
-                            value={cvc}
-                            onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3)}}
-                            onChange={(e) => setCvc(e.target.value)}
-                            onFocus={(e) => SetFocus(e.target.name)}
-                        />
-                    </Grid> 
-                    <Grid className={classes.Grid}>
-                        <TextField
-                            className={classes.TextFieldFull}
-                            required
-                            type="text"
-                            size="small"
-                            placeholder="Country"
-                            name="number"
-                            value={country}
-                            error={!!errorCountry}
-                            onClick={() => setErrorCountry("")}
-                            onFocus={(e) => SetFocus(e.target.name)}
-                            onChange={(e) => setCountry(e.target.value)}
-                        />
-                    </Grid>
-                    <FormLabel className={classes.validationLogin} component="legend" error="true">{errorCard}{errorCountry}</FormLabel>
+                    <form  onSubmit ={onSubmit}>
+                        <h2 style={{textAlign: "center", color: "#0c69cc"}}>RANK Credit Cards</h2>
+                            <Card
+                                locale={{ valid: "Expires" }}
+                                placeholders={{ name: "Name" }}
+                                style={{paddingTop: 20}}
+                                number={cardNumber}
+                                name={name}
+                                expiry={expiry}
+                                cvc={cvc}
+                                focused={focus}
+                            />
+                        <Grid container className={classes.GridTop}>
+                            <TextField
+                                className={classes.TextField}
+                                required
+                                type="text"
+                                size="small"
+                                name="number"
+                                placeholder="Cardholder Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                onFocus={(e) => SetFocus(e.target.name)}
+                            />
+                            <TextField
+                                className={classes.TextField}
+                                required
+                                type="number"
+                                size="small"
+                                name="number"
+                                placeholder="Card Number"
+                                value={cardNumber}
+                                error={!!errorCard}
+                                onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,16)}}
+                                onClick={() => setErrorCard("")}
+                                onChange={(e) => setCardNumber(e.target.value)}
+                                onFocus={(e) => SetFocus(e.target.name)}
+                            />
+                        </Grid>
+                        <Grid container className={classes.Grid}>
+                            <TextField
+                                className={classes.TextField}
+                                required
+                                type="text"
+                                size="small"
+                                name="number"
+                                placeholder="MM/YY"
+                                value={expiry}
+                                onChange={(e) => setExpiry(e.target.value)}
+                                onFocus={(e) => SetFocus(e.target.name)}
+                            />
+                            <TextField
+                                className={classes.TextField}
+                                required
+                                type="number"
+                                size="small"
+                                name="cvc"
+                                placeholder="CVC"
+                                value={cvc}
+                                onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3)}}
+                                onChange={(e) => setCvc(e.target.value)}
+                                onFocus={(e) => SetFocus(e.target.name)}
+                            />
+                        </Grid> 
+                        <Grid className={classes.Grid}>
+                            <TextField
+                                className={classes.TextFieldFull}
+                                required
+                                type="text"
+                                size="small"
+                                placeholder="Country"
+                                name="number"
+                                value={country}
+                                error={!!errorCountry}
+                                onClick={() => setErrorCountry("")}
+                                onFocus={(e) => SetFocus(e.target.name)}
+                                onChange={(e) => setCountry(e.target.value)}
+                            />
+                        </Grid>
+                        <FormLabel className={classes.validationLogin} component="legend" error="true">{errorCard}{errorCountry}</FormLabel>
                         <Grid container align="center">
                                 <Grid item lg={12} xs={12}>
                                     <Button type="submit" className={classes.Button} variant="outlined" style={{marginBottom: 20}}>
@@ -225,7 +217,7 @@ function CardForm() {
                                     </Button>
                                 </Grid>
                         </Grid>  
-            </form>
+                </form>
             </Box>
             <AddBannedCountry bannedCountries={bannedCountries} newBannedCountry={newBannedCountry}/>
         </Grid>
